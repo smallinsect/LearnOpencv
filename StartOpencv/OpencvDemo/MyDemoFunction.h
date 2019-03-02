@@ -10,3 +10,5 @@ using namespace cv;
 void demo1();
 
 void demo2();
+
+void demo3();
