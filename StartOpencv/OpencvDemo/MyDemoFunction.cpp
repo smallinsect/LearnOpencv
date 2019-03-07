@@ -74,7 +74,7 @@ void demo3() {
 	//		output[col] = saturate_cast<uchar>(5*current[col]-(current[col-offsetx]+current[col+offsetx]+next[col]));
 	//	}
 	//}
-	double t = getTickCount();
+	double t = (double)getTickCount();
 	Mat kernel = (Mat_<char>(3, 3) << 0, -1, 0, -1, 5, -1, 0, -1, 0);
 	filter2D(src, dst, src.depth(), kernel);
 	double timeconsume = (getTickCount() - t) / getTickFrequency();
@@ -128,4 +128,32 @@ void demo4() {
 	namedWindow("output", CV_WINDOW_AUTOSIZE);
 	imshow("output", dst);
 
+}
+
+//两张图片相加
+void demo5() {
+	Mat src1, src2, dst;
+	src1 = imread("1.jpg");
+	src2 = imread("2.jpg");
+	if (!src1.data) {
+		cout << "could not load image1..." << endl;
+		return;
+	}
+	if (!src2.data) {
+		cout << "cout not load image2..." << endl;
+		return;
+	}
+
+	double alpha = 0.5;
+	if (src1.rows == src2.rows && src1.cols == src2.cols && src1.type() == src2.type()) {
+		addWeighted(src1, alpha, src2, 1-alpha, 0, dst);
+		namedWindow("input1", CV_WINDOW_AUTOSIZE);
+		namedWindow("input2", CV_WINDOW_AUTOSIZE);
+		namedWindow("output", CV_WINDOW_AUTOSIZE);
+		imshow("input1", src1);
+		imshow("input2", src2);
+		imshow("output", dst);
+	} else {
+		cout << "two is difriend" << endl;
+	}
 }
