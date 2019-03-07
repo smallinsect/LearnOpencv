@@ -12,3 +12,4 @@ void demo2();
 void demo3();
 void demo4();
 void demo5();
+void demo6();

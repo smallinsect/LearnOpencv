@@ -1,6 +1,13 @@
 
 #include "MyDemoFunction.h"
 
+const char *src_ng = "1.jpg";
+const char *src_gj = "2.jpg";
+
+const char *input1 = "input1 window";
+const char *input2 = "input2 window";
+
+const char *output = "output window";
 
 void demo1() {
 	Mat src = imread("gujian3.jpg");
@@ -156,4 +163,39 @@ void demo5() {
 	} else {
 		cout << "two is difriend" << endl;
 	}
+}
+
+//调整图像亮度和对比度
+void demo6() {
+	Mat src, dst;
+	src = imread(src_ng);
+	if (!src.data) {
+		cout << "could not load image..." << endl;
+		return;
+	}
+	cvtColor(src, src, CV_BGR2GRAY);
+	dst = Mat::zeros(src.size(), src.type());
+
+	int height = src.rows;
+	int width = src.cols;
+	double alpha = 0.8;
+	double beta = 10;
+	for (int row = 0; row < height; ++row) {
+		for (int col = 0; col < width; ++col) {
+			if (src.channels() == 3) {
+				Vec3b v = src.at<Vec3b>(row, col);
+				dst.at<Vec3b>(row, col)[0] = saturate_cast<uchar>(v[0]*alpha + beta);//blue
+				dst.at<Vec3b>(row, col)[1] = saturate_cast<uchar>(v[1]*alpha + beta);//green
+				dst.at<Vec3b>(row, col)[2] = saturate_cast<uchar>(v[2]*alpha + beta);//red
+			} else if(src.channels() == 1){
+				dst.at<uchar>(row, col) = saturate_cast<uchar>(src.at<uchar>(row, col)*alpha + beta);
+			}
+		}
+	}
+	namedWindow(input1, CV_WINDOW_AUTOSIZE);
+	imshow(input1, src);
+
+	namedWindow(output, CV_WINDOW_AUTOSIZE);
+	imshow(output, dst);
+
 }
