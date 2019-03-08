@@ -199,3 +199,68 @@ void demo6() {
 	imshow(output, dst);
 
 }
+
+void demo7() {
+	Point p1 = Point(20, 30);
+	Point p2;
+	p2.x = 300;
+	p2.y = 300;
+	Scalar color = Scalar(0, 0, 255);
+
+	Mat bgImage = imread(src_gj);
+	if (!bgImage.data) {
+		cout << "could not load image ..." << endl;
+		return;
+	}
+
+	namedWindow(input1, CV_WINDOW_AUTOSIZE);
+	line(bgImage, p1, p2, color, 1, LINE_8);//绘制直线
+
+	Rect rect = Rect(10, 20, 30, 40);
+	color = Scalar(255, 0, 0);
+	rectangle(bgImage, rect, color, 2, LINE_8);//绘制矩形
+
+	color = Scalar(0, 255, 0);
+	ellipse(bgImage, Point(bgImage.cols/2, bgImage.rows/2), Size(bgImage.cols/4,bgImage.rows/8),90, 0, 360, color, 2, LINE_8);//绘制椭圆
+
+	color = Scalar(0, 255, 255);
+	Point center = Point(bgImage.cols/2, bgImage.rows/2);
+	circle(bgImage, center, 100, color, 2, LINE_8);//绘制圆
+
+	//绘制多边形
+	Point ap[1][6];
+	ap[0][0] = Point(20, 20);
+	ap[0][1] = Point(40, 20);
+	ap[0][2] = Point(50, 30);
+	ap[0][3] = Point(40, 40);
+	ap[0][4] = Point(20, 40);
+	ap[0][5] = Point(20, 20);
+
+	const Point *ppts[] = { ap[0] };
+	int np = 6;
+	color = Scalar(255, 255, 0);
+	//fillPoly(bgImage, ppts, np, 1, color, LINE_8);
+
+
+	//绘制文字
+	putText(bgImage, "HEI HEI HEI", Point(50,50), CV_FONT_HERSHEY_COMPLEX, 1.0, color, 1, LINE_8);
+
+	//绘制随机线
+	RNG rng(123456);//高斯随机数
+	Point pt1;
+	Point pt2;
+	for (int i = 0; i < 10000;  ++i) {
+		pt1.x = rng.uniform(0, bgImage.cols);
+		pt2.x = rng.uniform(0, bgImage.cols);
+		pt1.y = rng.uniform(0, bgImage.rows);
+		pt2.y = rng.uniform(0, bgImage.rows);
+
+		color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
+		if (waitKey(50) > 0) {
+			break;
+		}
+		line(bgImage, pt1, pt2, color, 1, LINE_8);
+		imshow(input1, bgImage);
+	}
+
+}

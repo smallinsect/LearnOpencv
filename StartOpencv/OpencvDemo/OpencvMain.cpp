@@ -9,7 +9,8 @@ int main(int argc, char **argv) {
 	//demo3();
 	//demo4();
 	//demo5();
-	demo6();
+	//demo6();
+	demo7();
 
 	waitKey(0);
 
